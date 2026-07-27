@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>لوحة تحكم Velora Jewelry</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/icons/favicon.png">
+<style>
+/* ==============================================================
+   VELORA JEWELRY — STYLESHEET (mobile-first rewrite)
+   Luxury black & gold theme · RTL (Arabic)
+   Written mobile-first throughout: unprefixed rules target phones;
+   @media (min-width: ...) blocks progressively enhance for larger
+   screens. No CSS features newer than widely-supported basics
+   (no min()/clamp()-only-paths for critical layout, no reliance on
+   exotic transforms) — everything here is plain, well-supported CSS.
+   ============================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --black:        #0B0B0B;
+  --black-soft:   #151515;
+  --black-card:   #1A1A1A;
+  --gold:         #C9A84C;
+  --gold-light:   #E4CA82;
+  --gold-dim:     rgba(201, 168, 76, 0.35);
+  --white:        #FFFFFF;
+  --gray:         #F5F5F5;
+  --gray-dim:     #9A9A9A;
+
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body:    'Cairo', sans-serif;
+
+  --radius: 4px;
+  --transition: 0.3s ease;
+  --shadow-gold: 0 8px 30px rgba(201, 168, 76, 0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  /* Prevent any accidental horizontal scroll/pan from ever making
+     fixed-position elements (modals, drawers) look misaligned. */
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  background: var(--black);
+  color: var(--gray);
+  font-family: var(--font-body);
+  direction: rtl;
+  text-align: right;
+  line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+ul { list-style: none; }
+input, textarea, select { font-family: inherit; }
+
+.container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 640px) { .container { padding: 0 24px; } }
+
+/* Signature: hairline gold rule with a centered diamond mark —
+   used to divide major sections instead of generic spacing */
+.gold-divider {
+  display: flex; align-items: center; gap: 14px;
+  margin: 0 auto 32px; max-width: 220px;
+}
+.gold-divider::before, .gold-divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim));
+}
+.gold-divider::after { background: linear-gradient(90deg, var(--gold-dim), transparent); }
+.gold-divider span {
+  width: 8px; height: 8px; background: var(--gold);
+  transform: rotate(45deg); flex-shrink: 0;
+}
+
+.eyebrow {
+  font-family: var(--font-body); font-size: 0.72rem; letter-spacing: 2.5px;
+  color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 10px;
+  text-align: center;
+}
+.section-title {
+  font-family: var(--font-display); font-weight: 600; font-size: 1.9rem;
+  color: var(--white); text-align: center; margin-bottom: 10px;
+}
+.section-sub { text-align: center; color: var(--gray-dim); max-width: 560px; margin: 0 auto 32px; font-size: 0.9rem; }
+
+.section { padding: 56px 0; }
+.section.alt { background: var(--black-soft); }
+
+@media (min-width: 768px) {
+  .section { padding: 80px 0; }
+  .section-title { font-size: 2.6rem; }
+  .section-sub { margin-bottom: 40px; }
+  .gold-divider { margin-bottom: 40px; }
+}
+
+/* ---------------- Loader ---------------- */
+#page-loader {
+  position: fixed; inset: 0; background: var(--black); z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#page-loader.hide { opacity: 0; visibility: hidden; }
+.loader-mark {
+  width: 48px; height: 48px; border: 1px solid var(--gold-dim);
+  border-top-color: var(--gold); border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------------- Header ---------------- */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  background: rgba(11,11,11,0.9);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; }
+.logo { font-family: var(--font-display); font-size: 1.4rem; color: var(--white); letter-spacing: 1px; }
+.logo span { color: var(--gold); }
+.nav-links { display: none; }
+.nav-links a { font-size: 0.9rem; letter-spacing: 0.5px; color: var(--gray); }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+.icon-btn { position: relative; font-size: 1.15rem; color: var(--gray); }
+.icon-btn:hover { color: var(--gold); }
+.badge {
+  position: absolute; top: -8px; left: -10px; background: var(--gold); color: var(--black);
+  font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.burger { display: block; font-size: 1.35rem; }
+
+@media (min-width: 900px) {
+  .nav { padding: 16px 24px; }
+  .logo { font-size: 1.6rem; }
+  .nav-links { display: flex; gap: 32px; }
+  .burger { display: none; }
+}
+
+/* ---------------- Mobile nav menu ---------------- */
+.mobile-menu {
+  position: fixed; top: 0; right: -100%; width: 80%; max-width: 340px; height: 100vh;
+  background: var(--black-soft); z-index: 600; padding: 26px 22px;
+  transition: right var(--transition);
+  border-left: 1px solid rgba(201,168,76,0.15);
+  overflow-y: auto;
+}
+.mobile-menu.open { right: 0; }
+.mobile-menu a { display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 1rem; }
+.mobile-menu .close-menu { font-size: 1.4rem; margin-bottom: 18px; color: var(--gold); }
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 550;
+  opacity: 0; visibility: hidden; transition: var(--transition);
+}
+.overlay.show { opacity: 1; visibility: visible; }
+
+/* ---------------- Hero ---------------- */
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  position: relative; text-align: center; padding: 120px 16px 60px;
+  background: linear-gradient(180deg, #0B0B0B 0%, #111 100%);
+}
+.hero-content { position: relative; z-index: 2; max-width: 780px; }
+.hero h1 {
+  font-family: var(--font-display); font-weight: 700; color: var(--white);
+  font-size: 2.2rem; line-height: 1.2; margin-bottom: 16px;
+}
+.hero h1 em { color: var(--gold); font-style: normal; }
+.hero p { color: var(--gray-dim); font-size: 0.98rem; max-width: 520px; margin: 0 auto 28px; }
+.hero-actions { display: flex; flex-direction: column; gap: 12px; }
+
+@media (min-width: 640px) {
+  .hero-actions { flex-direction: row; justify-content: center; gap: 16px; }
+}
+@media (min-width: 900px) {
+  .hero h1 { font-size: 3.6rem; }
+  .hero p { font-size: 1.05rem; }
+}
+
+/* ---------------- Buttons ---------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 28px; border-radius: var(--radius); font-size: 0.88rem; letter-spacing: 0.5px;
+  transition: var(--transition); font-weight: 500;
+}
+.btn-gold { background: var(--gold); color: var(--black); }
+.btn-gold:hover { background: var(--gold-light); }
+.btn-outline { border: 1px solid var(--gold-dim); color: var(--white); }
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.btn-block { width: 100%; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---------------- Categories ---------------- */
+.categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 640px) { .categories-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+@media (min-width: 1000px) { .categories-grid { grid-template-columns: repeat(5, 1fr); } }
+
+.cat-card {
+  position: relative; aspect-ratio: 1; border-radius: var(--radius); overflow: hidden;
+  background: linear-gradient(160deg, #1c1c1c, #0d0d0d);
+  border: 1px solid rgba(201,168,76,0.12);
+  display: flex; align-items: flex-end; padding: 14px;
+}
+.cat-card:hover { border-color: var(--gold-dim); }
+.cat-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+.cat-card span { position: relative; z-index: 2; color: var(--white); font-family: var(--font-display); font-size: 1.05rem; }
+
+/* ---------------- Toolbar (search/filter/sort) ---------------- */
+.shop-toolbar {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 24px; padding: 14px; border: 1px solid rgba(201,168,76,0.12); border-radius: var(--radius);
+  background: rgba(255,255,255,0.02);
+}
+.search-box { position: relative; width: 100%; }
+.search-box input {
+  width: 100%; padding: 12px 40px 12px 14px; background: var(--black-card); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius); color: var(--white); font-size: 0.9rem;
+}
+.search-box input:focus { outline: none; border-color: var(--gold-dim); }
+.search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-dim); }
+.filter-select {
+  width: 100%; padding: 12px 14px; background: var(--black-card); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius); color: var(--white); font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .shop-toolbar { flex-direction: row; align-items: center; justify-content: space-between; }
+  .search-box { flex: 1; min-width: 200px; width: auto; }
+  .filter-select { width: auto; }
+}
+
+/* ---------------- Products grid ---------------- */
+.products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (min-width: 640px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+@media (min-width: 1100px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.product-card {
+  background: var(--black-card); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius);
+  overflow: hidden; position: relative;
+}
+.product-card:hover { border-color: var(--gold-dim); }
+.product-thumb { position: relative; aspect-ratio: 1; overflow: hidden; background: #111; }
+.product-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s ease; }
+.product-thumb img.loaded { opacity: 1; }
+.discount-tag {
+  position: absolute; top: 8px; right: 8px; background: var(--gold); color: var(--black);
+  font-size: 0.68rem; font-weight: 700; padding: 3px 7px; border-radius: 2px; z-index: 2;
+}
+.stock-tag {
+  position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.7); color: var(--gray-dim);
+  font-size: 0.62rem; padding: 3px 7px; border-radius: 2px; z-index: 2;
+}
+.wish-toggle {
+  position: absolute; bottom: 8px; left: 8px; z-index: 2; font-size: 1.05rem; color: var(--white);
+  background: rgba(0,0,0,0.5); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.wish-toggle.active, .wish-toggle:hover { color: var(--gold); }
+.product-info { padding: 12px; }
+.product-cat { font-size: 0.65rem; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+.product-title { font-family: var(--font-display); font-size: 1.02rem; color: var(--white); margin: 4px 0 6px; }
+.product-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.price-now { color: var(--gold); font-weight: 600; font-size: 0.98rem; }
+.price-old { color: var(--gray-dim); text-decoration: line-through; font-size: 0.8rem; }
+.product-actions { display: flex; flex-direction: column; gap: 6px; }
+.product-actions .btn { padding: 9px; font-size: 0.75rem; }
+
+@media (min-width: 640px) {
+  .product-info { padding: 16px; }
+  .product-title { font-size: 1.15rem; }
+  .product-actions { flex-direction: row; gap: 8px; }
+  .product-actions .btn { flex: 1; padding: 10px; font-size: 0.8rem; }
+}
+
+.empty-state { text-align: center; padding: 50px 16px; color: var(--gray-dim); grid-column: 1 / -1; }
+.empty-state i { font-size: 2.2rem; color: var(--gold-dim); margin-bottom: 12px; display: block; }
+
+.skeleton { background: linear-gradient(90deg, #1a1a1a 25%, #232323 37%, #1a1a1a 63%); background-size: 400% 100%; animation: shimmer 1.4s ease infinite; }
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+
+/* ==============================================================
+   MODALS — simple, robust flexbox centering (no transforms/percent
+   width tricks). This pattern is deliberately boring: flexbox
+   centering on a fixed full-viewport overlay is one of the most
+   widely and consistently supported CSS layout patterns across
+   every mobile/desktop browser.
+   ============================================================== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+  z-index: 800; display: flex; align-items: center; justify-content: center;
+  padding: 16px; overflow-y: auto;
+  opacity: 0; visibility: hidden; transition: opacity var(--transition), visibility var(--transition);
+}
+.modal-overlay.show { opacity: 1; visibility: visible; }
+.modal-box {
+  background: var(--black-soft); border: 1px solid rgba(201,168,76,0.2); border-radius: var(--radius);
+  width: 100%; max-width: 960px; max-height: 90vh; overflow-y: auto;
+  margin: auto;
+  transform: translateY(16px); transition: transform var(--transition);
+}
+.modal-overlay.show .modal-box { transform: translateY(0); }
+.modal-close {
+  position: absolute; top: 14px; left: 14px; z-index: 5; font-size: 1.2rem; color: var(--gray-dim);
+  width: 34px; height: 34px; border-radius: 50%; background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { color: var(--gold); }
+
+/* Product detail modal */
+.pd-grid { display: block; position: relative; }
+.pd-gallery { padding: 16px; }
+.pd-main-image {
+  aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; background: #111; margin-bottom: 10px;
+  position: relative; cursor: zoom-in;
+}
+.pd-main-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.pd-main-image.zoomed { cursor: zoom-out; }
+.pd-main-image.zoomed img { transform: scale(1.8); }
+.pd-thumbs { display: flex; gap: 8px; overflow-x: auto; }
+.pd-thumbs img {
+  width: 56px; height: 56px; object-fit: cover; border-radius: 4px; border: 2px solid transparent;
+  opacity: 0.6; flex-shrink: 0;
+}
+.pd-thumbs img.active { border-color: var(--gold); opacity: 1; }
+.pd-details { padding: 20px 20px 24px; }
+.pd-details .product-cat { margin-bottom: 6px; }
+.pd-details h2 { font-family: var(--font-display); color: var(--white); font-size: 1.5rem; margin-bottom: 8px; }
+.pd-details .price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+.pd-details .price-now { font-size: 1.3rem; }
+.pd-desc { color: var(--gray-dim); font-size: 0.88rem; margin-bottom: 18px; line-height: 1.7; }
+.qty-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.qty-control { display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); }
+.qty-control button { width: 34px; height: 34px; color: var(--gold); font-size: 1.05rem; }
+.qty-control span { width: 34px; text-align: center; }
+.pd-actions { display: flex; gap: 10px; }
+
+@media (min-width: 800px) {
+  .pd-grid { display: grid; grid-template-columns: 1fr 1fr; }
+  .pd-gallery { padding: 20px; }
+  .pd-details { padding: 30px; }
+  .pd-details h2 { font-size: 1.8rem; }
+  .pd-details .price-now { font-size: 1.5rem; }
+}
+
+/* Cart / Wishlist drawer */
+.drawer {
+  position: fixed; top: 0; left: -100%; width: 88%; max-width: 420px; height: 100vh;
+  background: var(--black-soft); z-index: 700; transition: left var(--transition);
+  display: flex; flex-direction: column; border-right: 1px solid rgba(201,168,76,0.15);
+}
+.drawer.open { left: 0; }
+.drawer-header { display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.drawer-header h3 { font-family: var(--font-display); color: var(--white); font-size: 1.2rem; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 18px; }
+.drawer-footer { padding: 18px; border-top: 1px solid rgba(255,255,255,0.06); }
+
+.cart-item { display: flex; gap: 12px; margin-bottom: 16px; }
+.cart-item img { width: 62px; height: 62px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-info h4 { font-size: 0.88rem; color: var(--white); margin-bottom: 4px; }
+.cart-item-info .price-now { font-size: 0.82rem; }
+.cart-item-remove { color: var(--gray-dim); font-size: 0.8rem; flex-shrink: 0; }
+.cart-item-remove:hover { color: #d66; }
+.cart-total-row { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 0.98rem; color: var(--white); }
+.cart-total-row strong { color: var(--gold); }
+
+/* Checkout modal */
+.checkout-grid { padding: 20px; display: grid; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 0.78rem; color: var(--gray-dim); }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 12px 14px; background: var(--black-card); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius); color: var(--white); font-size: 0.9rem;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--gold-dim); }
+.form-row-2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.checkout-summary { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 14px; }
+
+@media (min-width: 640px) {
+  .checkout-grid { padding: 30px; gap: 16px; }
+  .form-row-2 { grid-template-columns: 1fr 1fr; gap: 16px; }
+}
+
+/* Track order */
+.track-box { max-width: 480px; margin: 0 auto; }
+.track-result { margin-top: 20px; border: 1px solid rgba(201,168,76,0.2); border-radius: var(--radius); padding: 16px; }
+.status-pill { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.72rem; letter-spacing: 0.5px; }
+.status-pending { background: rgba(201,168,76,0.15); color: var(--gold); }
+.status-confirmed { background: rgba(80,150,255,0.15); color: #7fb2ff; }
+.status-shipping { background: rgba(255,170,60,0.15); color: #ffb35a; }
+.status-delivered { background: rgba(90,200,120,0.15); color: #6fdc93; }
+.status-cancelled { background: rgba(220,80,80,0.15); color: #f27d7d; }
+
+/* ---------------- About / Contact ---------------- */
+.about-grid { display: grid; gap: 28px; align-items: center; }
+.about-grid img { border-radius: var(--radius); }
+.about-text h2 { font-family: var(--font-display); font-size: 1.7rem; color: var(--white); margin-bottom: 14px; }
+.about-text p { color: var(--gray-dim); margin-bottom: 12px; font-size: 0.92rem; }
+
+.contact-grid { display: grid; gap: 20px; }
+.contact-info-card { background: var(--black-card); border: 1px solid rgba(201,168,76,0.12); border-radius: var(--radius); padding: 22px; }
+.contact-info-card .row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; color: var(--gray-dim); font-size: 0.9rem; }
+.contact-info-card i { color: var(--gold); font-size: 1.1rem; width: 22px; flex-shrink: 0; }
+
+@media (min-width: 900px) {
+  .about-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .about-text h2 { font-size: 2rem; }
+  .contact-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+}
+
+/* ---------------- Footer ---------------- */
+footer { background: var(--black-soft); border-top: 1px solid rgba(201,168,76,0.1); padding: 40px 0 20px; }
+.footer-grid { display: grid; gap: 24px; margin-bottom: 24px; }
+.footer-grid h4 { color: var(--white); font-size: 0.92rem; margin-bottom: 12px; }
+.footer-grid ul li { margin-bottom: 9px; }
+.footer-grid ul a { color: var(--gray-dim); font-size: 0.88rem; }
+.footer-grid ul a:hover { color: var(--gold); }
+.footer-bottom { text-align: center; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--gray-dim); font-size: 0.78rem; }
+
+@media (min-width: 700px) {
+  footer { padding: 50px 0 20px; }
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+}
+
+/* ---------------- WhatsApp float ---------------- */
+.whatsapp-float {
+  position: fixed; bottom: 20px; left: 20px; z-index: 400;
+  width: 52px; height: 52px; border-radius: 50%; background: #25D366;
+  display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff;
+  box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+}
+
+/* ---------------- Toasts ---------------- */
+#toast-container {
+  position: fixed; bottom: 16px; left: 16px; right: 16px; z-index: 1000;
+  display: flex; flex-direction: column; gap: 10px; align-items: center;
+}
+.toast {
+  background: var(--black-card); border: 1px solid var(--gold-dim); color: var(--white);
+  padding: 13px 18px; border-radius: var(--radius); font-size: 0.82rem; display: flex; align-items: center; gap: 10px;
+  animation: toastIn 0.3s ease both; box-shadow: 0 8px 24px rgba(0,0,0,0.4); width: 100%; max-width: 380px;
+}
+.toast.success i { color: #6fdc93; }
+.toast.error i { color: #f27d7d; }
+.toast.fade-out { animation: toastOut 0.3s ease forwards; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(10px); } }
+
+@media (min-width: 640px) {
+  #toast-container { left: auto; right: 24px; bottom: 24px; align-items: flex-end; }
+}
+
+/* ---------------- Utility ---------------- */
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.mt-40 { margin-top: 40px; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ==============================================================
+   ADMIN PANEL (admin.html) — mobile-first
+   The sidebar is ALWAYS an off-canvas drawer, toggled by the
+   burger button, on every screen size. No width/pointer media
+   query branching — one simple, predictable behavior everywhere.
+   ============================================================== */
+.admin-body { background: var(--black-soft); min-height: 100vh; }
+
+/* ---- login ---- */
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.login-card {
+  width: 100%; max-width: 380px; background: var(--black-card); border: 1px solid rgba(201,168,76,0.15);
+  border-radius: var(--radius); padding: 36px 26px; text-align: center;
+}
+.login-card .logo { display: block; font-size: 1.8rem; margin-bottom: 6px; }
+.login-card p { color: var(--gray-dim); font-size: 0.85rem; margin-bottom: 22px; }
+.login-card .form-group { text-align: right; margin-bottom: 14px; }
+
+/* ---- shell ---- */
+.admin-shell { display: block; min-height: 100vh; }
+.admin-sidebar {
+  width: 82%; max-width: 260px; background: var(--black); border-left: 1px solid rgba(201,168,76,0.1);
+  padding: 24px 16px; position: fixed; top: 0; bottom: 0; right: -100%; z-index: 700;
+  transition: right var(--transition);
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  overflow-y: auto;
+}
+.admin-sidebar.open { right: 0; }
+.admin-sidebar .logo { display: block; margin-bottom: 26px; padding: 0 10px; }
+.admin-nav a {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius);
+  color: var(--gray-dim); font-size: 0.9rem; margin-bottom: 4px;
+}
+.admin-nav a:hover, .admin-nav a.active { background: rgba(201,168,76,0.1); color: var(--gold); }
+.admin-main { padding: 20px 16px 50px; }
+.admin-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; gap: 10px; }
+.admin-topbar h1 { font-family: var(--font-display); color: var(--white); font-size: 1.25rem; flex: 1; text-align: center; }
+#admin-burger { display: block; font-size: 1.3rem; color: var(--white); flex-shrink: 0; }
+
+@media (min-width: 640px) {
+  .admin-main { padding: 24px 30px 60px; }
+  .admin-topbar h1 { font-size: 1.6rem; text-align: right; }
+}
+
+/* ---- stats ---- */
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 28px; }
+.stat-card { background: var(--black-card); border: 1px solid rgba(201,168,76,0.12); border-radius: var(--radius); padding: 16px; }
+.stat-card i { color: var(--gold); font-size: 1.2rem; margin-bottom: 8px; display: block; }
+.stat-card .val { font-family: var(--font-display); font-size: 1.4rem; color: var(--white); }
+.stat-card .lbl { font-size: 0.72rem; color: var(--gray-dim); }
+
+@media (min-width: 640px) { .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+@media (min-width: 1100px) { .stats-grid { grid-template-columns: repeat(6, 1fr); } }
+
+/* ---- panels ---- */
+.admin-panel { animation: fadeUp 0.3s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.panel-toolbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.panel-toolbar .filters { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.panel-toolbar input, .panel-toolbar select {
+  width: 100%; padding: 10px 14px; background: var(--black-card); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius); color: var(--white); font-size: 0.85rem;
+}
+.panel-toolbar .btn { width: 100%; }
+
+@media (min-width: 700px) {
+  .panel-toolbar { flex-direction: row; align-items: center; justify-content: space-between; }
+  .panel-toolbar .filters { flex-direction: row; flex-wrap: wrap; flex: 1; }
+  .panel-toolbar input, .panel-toolbar select { width: auto; }
+  .panel-toolbar .btn { width: auto; }
+}
+
+/* ---- data table ---- */
+.table-wrap { overflow-x: auto; background: var(--black-card); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); -webkit-overflow-scrolling: touch; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 600px; }
+table.data-table th, table.data-table td { padding: 12px 14px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
+table.data-table th { color: var(--gold); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+table.data-table td { color: var(--gray); }
+.table-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 4px; }
+.table-actions button { color: var(--gray-dim); font-size: 1rem; margin-inline-start: 10px; }
+.table-actions button:hover { color: var(--gold); }
+.empty-cell { text-align: center; color: var(--gray-dim); padding: 26px !important; }
+
+.tag-mini { display: inline-block; font-size: 0.68rem; padding: 3px 8px; border-radius: 10px; margin-inline-start: 4px; }
+.tag-green { background: rgba(90,200,120,0.15); color: #6fdc93; }
+.tag-gray { background: rgba(255,255,255,0.08); color: var(--gray-dim); }
+.tag-gold { background: rgba(201,168,76,0.15); color: var(--gold); }
+
+.status-select {
+  padding: 7px 10px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.1);
+  background: var(--black-soft); color: var(--white); font-size: 0.78rem;
+}
+.status-pending { border-color: var(--gold-dim); }
+.status-confirmed { border-color: #7fb2ff; }
+.status-shipping { border-color: #ffb35a; }
+.status-delivered { border-color: #6fdc93; }
+.status-cancelled { border-color: #f27d7d; }
+
+/* ---- product/category form modal ---- */
+.admin-form-grid { padding: 18px 16px; display: grid; gap: 14px; }
+.admin-form-grid h2 { font-family: var(--font-display); color: var(--white); font-size: 1.25rem; margin-bottom: 4px; padding-inline-end: 40px; }
+.checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--gray-dim); }
+.image-drop {
+  border: 1px dashed rgba(201,168,76,0.3); border-radius: var(--radius); padding: 16px 10px; text-align: center;
+  color: var(--gray-dim); cursor: pointer; font-size: 0.8rem;
+}
+.image-drop:hover { border-color: var(--gold); color: var(--gold); }
+.images-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.img-chip { position: relative; width: 66px; height: 66px; border-radius: 4px; overflow: hidden; flex-shrink: 0; }
+.img-chip img { width: 100%; height: 100%; object-fit: cover; }
+.img-chip button[data-action^="remove"] {
+  position: absolute; top: 2px; left: 2px; background: rgba(0,0,0,0.7); color: #fff; width: 20px; height: 20px;
+  border-radius: 50%; font-size: 0.9rem; line-height: 1;
+}
+.img-chip .primary-badge {
+  position: absolute; bottom: 0; inset-inline: 0; background: var(--gold); color: var(--black);
+  font-size: 0.6rem; text-align: center; padding: 2px 0;
+}
+.img-chip .set-primary-btn {
+  position: absolute; bottom: 0; inset-inline: 0; background: rgba(0,0,0,0.75); color: var(--gold);
+  font-size: 0.6rem; text-align: center; padding: 2px 0;
+}
+
+@media (min-width: 640px) {
+  .admin-form-grid { padding: 26px; gap: 16px; }
+  .admin-form-grid h2 { font-size: 1.4rem; padding-inline-end: 0; }
+}
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="admin-body">
+
+<div id="toast-container"></div>
+
+<!-- ============ LOGIN ============ -->
+<div class="login-wrap" id="login-view">
+  <div class="login-card">
+    <span class="logo">Velora<span>.</span></span>
+    <p>لوحة تحكم الإدارة</p>
+    <form id="login-form">
+      <div class="form-group"><label>البريد الإلكتروني</label><input type="email" name="email" required></div>
+      <div class="form-group"><label>كلمة المرور</label><input type="password" name="password" required></div>
+      <button type="submit" class="btn btn-gold btn-block">تسجيل الدخول</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD SHELL ============ -->
+<div class="admin-shell hidden" id="dashboard-view">
+  <aside class="admin-sidebar" id="sidebar">
+    <span class="logo">Velora<span>.</span></span>
+    <nav class="admin-nav">
+      <a href="#" data-panel="panel-dashboard" class="active"><i class="fa-solid fa-gauge"></i> الرئيسية</a>
+      <a href="#" data-panel="panel-products"><i class="fa-solid fa-gem"></i> المنتجات</a>
+      <a href="#" data-panel="panel-categories"><i class="fa-solid fa-tags"></i> الفئات</a>
+      <a href="#" data-panel="panel-orders"><i class="fa-solid fa-box"></i> الطلبات</a>
+      <a href="#" data-panel="panel-settings"><i class="fa-solid fa-gear"></i> الإعدادات</a>
+      <a href="index.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> عرض المتجر</a>
+    </nav>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <button id="admin-burger"><i class="fa-solid fa-bars"></i></button>
+      <h1 id="panel-heading">مرحباً، <span id="admin-name"></span></h1>
+      <button class="btn btn-outline" id="logout-btn">تسجيل الخروج</button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section class="admin-panel" id="panel-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card"><i class="fa-solid fa-gem"></i><div class="val" id="stat-products">0</div><div class="lbl">المنتجات</div></div>
+        <div class="stat-card"><i class="fa-solid fa-tags"></i><div class="val" id="stat-categories">0</div><div class="lbl">الفئات</div></div>
+        <div class="stat-card"><i class="fa-solid fa-box"></i><div class="val" id="stat-orders">0</div><div class="lbl">إجمالي الطلبات</div></div>
+        <div class="stat-card"><i class="fa-solid fa-clock"></i><div class="val" id="stat-pending">0</div><div class="lbl">طلبات قيد الانتظار</div></div>
+        <div class="stat-card"><i class="fa-solid fa-triangle-exclamation"></i><div class="val" id="stat-lowstock">0</div><div class="lbl">مخزون منخفض</div></div>
+        <div class="stat-card"><i class="fa-solid fa-sack-dollar"></i><div class="val" id="stat-revenue">0</div><div class="lbl">إجمالي المبيعات</div></div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="admin-panel hidden" id="panel-products">
+      <div class="panel-toolbar">
+        <div class="filters">
+          <input type="text" id="product-search" placeholder="ابحث عن منتج...">
+          <select id="product-filter-category"></select>
+        </div>
+        <button class="btn btn-gold" data-action="add-product"><i class="fa-solid fa-plus"></i> إضافة منتج</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>صورة</th><th>الاسم</th><th>الفئة</th><th>السعر</th><th>المخزون</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+          <tbody id="products-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="admin-panel hidden" id="panel-categories">
+      <div class="panel-toolbar">
+        <div class="filters"></div>
+        <button class="btn btn-gold" data-action="add-category"><i class="fa-solid fa-plus"></i> إضافة فئة</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>صورة</th><th>الاسم</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+          <tbody id="categories-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORDERS -->
+    <section class="admin-panel hidden" id="panel-orders">
+      <div class="panel-toolbar">
+        <div class="filters">
+          <select id="order-status-filter">
+            <option value="">كل الحالات</option>
+            <option value="pending">قيد الانتظار</option>
+            <option value="confirmed">مؤكد</option>
+            <option value="shipping">قيد الشحن</option>
+            <option value="delivered">تم التسليم</option>
+            <option value="cancelled">ملغي</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>رقم الطلب</th><th>العميل</th><th>المدينة</th><th>المجموع</th><th>الحالة</th><th></th></tr></thead>
+          <tbody id="orders-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="admin-panel hidden" id="panel-settings">
+      <div class="table-wrap" style="max-width:520px;">
+        <form id="settings-form" class="admin-form-grid">
+          <h2>إعدادات المتجر</h2>
+          <div class="form-group"><label>اسم المتجر</label><input type="text" name="site_name" required></div>
+          <div class="form-group"><label>رقم واتساب (بالصيغة الدولية بدون +)</label><input type="text" name="whatsapp_number" placeholder="212600000000"></div>
+          <div class="form-group"><label>العملة</label><input type="text" name="currency" required></div>
+          <button type="submit" class="btn btn-gold">حفظ الإعدادات</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="overlay" id="sidebar-overlay"></div>
+
+<!-- ============ PRODUCT FORM MODAL ============ -->
+<div class="modal-overlay" id="product-form-modal">
+  <div class="modal-box" style="max-width:700px;">
+    <button class="modal-close" data-action="close-product-form"><i class="fa-solid fa-xmark"></i></button>
+    <form class="admin-form-grid" id="product-form">
+      <h2 id="product-form-title">إضافة منتج</h2>
+      <div class="form-row-2">
+        <div class="form-group"><label>اسم المنتج</label><input type="text" name="title" required></div>
+        <div class="form-group"><label>الرابط المختصر (slug)</label><input type="text" name="slug" placeholder="يُنشأ تلقائياً إن ترك فارغاً"></div>
+      </div>
+      <div class="form-group"><label>الوصف</label><textarea name="description" rows="3"></textarea></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>السعر (د.م.)</label><input type="number" step="0.01" min="0" name="price" required></div>
+        <div class="form-group"><label>نسبة الخصم (%)</label><input type="number" step="0.01" min="0" max="100" name="discount" value="0"></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>المخزون</label><input type="number" min="0" name="stock" required></div>
+        <div class="form-group"><label>رمز المنتج (SKU)</label><input type="text" name="sku"></div>
+      </div>
+      <div class="form-group">
+        <label>الفئة</label>
+        <select name="category_id" id="product-category-select"></select>
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <label class="checkbox-row"><input type="checkbox" name="featured"> منتج مميز</label>
+        <label class="checkbox-row"><input type="checkbox" name="is_active"> نشط (ظاهر في المتجر)</label>
+      </div>
+
+      <div class="form-group">
+        <label>الصور الحالية</label>
+        <div class="images-row" id="existing-images"></div>
+      </div>
+      <div class="form-group">
+        <label>إضافة صور جديدة</label>
+        <label class="image-drop">
+          <i class="fa-solid fa-cloud-arrow-up"></i> اضغط لاختيار صور (يمكن اختيار عدة صور)
+          <input type="file" id="product-images-input" accept="image/*" multiple hidden>
+        </label>
+        <div class="images-row" id="pending-images"></div>
+      </div>
+
+      <button type="submit" class="btn btn-gold btn-block">حفظ المنتج</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ CATEGORY FORM MODAL ============ -->
+<div class="modal-overlay" id="category-form-modal">
+  <div class="modal-box" style="max-width:480px;">
+    <button class="modal-close" data-action="close-category-form"><i class="fa-solid fa-xmark"></i></button>
+    <form class="admin-form-grid" id="category-form">
+      <h2 id="category-form-title">إضافة فئة</h2>
+      <div class="form-group"><label>الاسم</label><input type="text" name="name" required></div>
+      <div class="form-group"><label>الرابط المختصر (slug)</label><input type="text" name="slug" placeholder="يُنشأ تلقائياً إن ترك فارغاً"></div>
+      <div class="form-group"><label>رابط الصورة</label><input type="url" name="image_url" placeholder="https://..."></div>
+      <div class="form-group"><label>ترتيب العرض</label><input type="number" name="display_order" value="0"></div>
+      <label class="checkbox-row"><input type="checkbox" name="is_active"> نشطة (ظاهرة في المتجر)</label>
+      <button type="submit" class="btn btn-gold btn-block">حفظ الفئة</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ ORDER DETAIL MODAL ============ -->
+<div class="modal-overlay" id="order-detail-modal">
+  <div class="modal-box" style="max-width:520px;">
+    <button class="modal-close" data-action="close-order-detail"><i class="fa-solid fa-xmark"></i></button>
+    <div class="admin-form-grid" id="order-detail-body"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ==============================================================
+   VELORA JEWELRY — Supabase client & shared data-access layer
+   Loaded by both the storefront (app.js) and admin panel (admin.js)
+   ============================================================== */
+
+// --- Project credentials -------------------------------------
+const SUPABASE_URL = 'https://duklgudhjweurclhzthu.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR1a2xndWRoandldXJjbGh6dGh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0MjE4NDYsImV4cCI6MjA5Nzk5Nzg0Nn0.sdslwXtZsBqk-UWwUvdOglKiGl5vWgZy29Bab9cpYHY';
+const PRODUCT_IMAGES_BUCKET = 'product-images';
+
+// supabase-js is loaded globally via CDN in the HTML <head>
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ---------------------------------------------------------------
+   CATEGORIES
+--------------------------------------------------------------- */
+const CategoriesAPI = {
+  async listActive() {
+    const { data, error } = await supabaseClient
+      .from('categories')
+      .select('*')
+      .eq('is_active', true)
+      .order('display_order', { ascending: true });
+    if (error) throw error;
+    return data;
+  },
+  async listAll() {
+    const { data, error } = await supabaseClient
+      .from('categories')
+      .select('*')
+      .order('display_order', { ascending: true });
+    if (error) throw error;
+    return data;
+  },
+  async create(payload) {
+    const { data, error } = await supabaseClient.from('categories').insert(payload).select().single();
+    if (error) throw error;
+    return data;
+  },
+  async update(id, payload) {
+    const { data, error } = await supabaseClient.from('categories').update(payload).eq('id', id).select().single();
+    if (error) throw error;
+    return data;
+  },
+  async remove(id) {
+    const { error } = await supabaseClient.from('categories').delete().eq('id', id);
+    if (error) throw error;
+  }
+};
+
+/* ---------------------------------------------------------------
+   PRODUCTS (with joined images + category)
+--------------------------------------------------------------- */
+const ProductsAPI = {
+  async listActive({ categorySlug, search, sort } = {}) {
+    let query = supabaseClient
+      .from('products')
+      .select('*, category:categories(id,name,slug), images:product_images(id,image_url,image_path,display_order,is_primary)')
+      .eq('is_active', true);
+
+    if (categorySlug) {
+      const { data: cat } = await supabaseClient.from('categories').select('id').eq('slug', categorySlug).maybeSingle();
+      if (cat) query = query.eq('category_id', cat.id);
+    }
+    if (search) {
+      query = query.ilike('title', `%${search}%`);
+    }
+
+    switch (sort) {
+      case 'price_asc': query = query.order('price', { ascending: true }); break;
+      case 'price_desc': query = query.order('price', { ascending: false }); break;
+      case 'oldest': query = query.order('created_at', { ascending: true }); break;
+      default: query = query.order('created_at', { ascending: false });
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data;
+  },
+  async listFeatured() {
+    const { data, error } = await supabaseClient
+      .from('products')
+      .select('*, category:categories(id,name,slug), images:product_images(id,image_url,image_path,display_order,is_primary)')
+      .eq('is_active', true)
+      .eq('featured', true)
+      .order('created_at', { ascending: false })
+      .limit(8);
+    if (error) throw error;
+    return data;
+  },
+  async getById(id) {
+    const { data, error } = await supabaseClient
+      .from('products')
+      .select('*, category:categories(id,name,slug), images:product_images(id,image_url,image_path,display_order,is_primary)')
+      .eq('id', id)
+      .single();
+    if (error) throw error;
+    return data;
+  },
+  async listAllForAdmin({ search, categoryId } = {}) {
+    let query = supabaseClient
+      .from('products')
+      .select('*, category:categories(id,name), images:product_images(id,image_url,image_path,display_order,is_primary)')
+      .order('created_at', { ascending: false });
+    if (search) query = query.ilike('title', `%${search}%`);
+    if (categoryId) query = query.eq('category_id', categoryId);
+    const { data, error } = await query;
+    if (error) throw error;
+    return data;
+  },
+  async create(payload) {
+    const { data, error } = await supabaseClient.from('products').insert(payload).select().single();
+    if (error) throw error;
+    return data;
+  },
+  async update(id, payload) {
+    const { data, error } = await supabaseClient.from('products').update(payload).eq('id', id).select().single();
+    if (error) throw error;
+    return data;
+  },
+  async remove(id) {
+    // fetch images first so their Storage objects can be removed
+    const { data: images } = await supabaseClient.from('product_images').select('image_path').eq('product_id', id);
+    if (images && images.length) {
+      await supabaseClient.storage.from(PRODUCT_IMAGES_BUCKET).remove(images.map(i => i.image_path));
+    }
+    const { error } = await supabaseClient.from('products').delete().eq('id', id);
+    if (error) throw error;
+  }
+};
+
+/* ---------------------------------------------------------------
+   PRODUCT IMAGES
+--------------------------------------------------------------- */
+const ProductImagesAPI = {
+  async upload(productId, file, { isPrimary = false, order = 0 } = {}) {
+    const ext = file.name.split('.').pop();
+    const path = `${productId}/${crypto.randomUUID()}.${ext}`;
+    const { error: upErr } = await supabaseClient.storage.from(PRODUCT_IMAGES_BUCKET).upload(path, file, { upsert: false });
+    if (upErr) throw upErr;
+    const { data: urlData } = supabaseClient.storage.from(PRODUCT_IMAGES_BUCKET).getPublicUrl(path);
+    const { data, error } = await supabaseClient
+      .from('product_images')
+      .insert({ product_id: productId, image_url: urlData.publicUrl, image_path: path, is_primary: isPrimary, display_order: order })
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+  async remove(imageId, imagePath) {
+    await supabaseClient.storage.from(PRODUCT_IMAGES_BUCKET).remove([imagePath]);
+    const { error } = await supabaseClient.from('product_images').delete().eq('id', imageId);
+    if (error) throw error;
+  },
+  async setPrimary(productId, imageId) {
+    await supabaseClient.from('product_images').update({ is_primary: false }).eq('product_id', productId);
+    const { error } = await supabaseClient.from('product_images').update({ is_primary: true }).eq('id', imageId);
+    if (error) throw error;
+  }
+};
+
+/* ---------------------------------------------------------------
+   ORDERS
+--------------------------------------------------------------- */
+const OrdersAPI = {
+  async create({ customer, items, subtotal, total }) {
+    const itemsPayload = items.map(i => ({
+      product_id: i.id,
+      product_title: i.title,
+      unit_price: i.finalPrice,
+      quantity: i.qty,
+      subtotal: i.finalPrice * i.qty
+    }));
+
+    const { data, error } = await supabaseClient.rpc('create_order', {
+      p_customer_name: customer.name,
+      p_customer_phone: customer.phone,
+      p_customer_city: customer.city,
+      p_customer_address: customer.address,
+      p_notes: customer.notes || null,
+      p_items: itemsPayload
+    });
+    if (error) throw error;
+    const row = Array.isArray(data) ? data[0] : data;
+    return { id: row.order_id, order_number: row.order_number, total: row.total };
+  },
+  async track(orderNumber) {
+    const { data, error } = await supabaseClient.rpc('track_order', { p_order_number: orderNumber });
+    if (error) throw error;
+    return data && data.length ? data[0] : null;
+  },
+  async listAllForAdmin({ status } = {}) {
+    let query = supabaseClient.from('orders').select('*, items:order_items(*)').order('created_at', { ascending: false });
+    if (status) query = query.eq('status', status);
+    const { data, error } = await query;
+    if (error) throw error;
+    return data;
+  },
+  async updateStatus(id, status) {
+    const { error } = await supabaseClient.from('orders').update({ status }).eq('id', id);
+    if (error) throw error;
+  }
+};
+
+/* ---------------------------------------------------------------
+   SETTINGS
+--------------------------------------------------------------- */
+const SettingsAPI = {
+  async get() {
+    const { data, error } = await supabaseClient.from('settings').select('*').eq('id', 1).single();
+    if (error) throw error;
+    return data;
+  },
+  async update(payload) {
+    const { error } = await supabaseClient.from('settings').update(payload).eq('id', 1);
+    if (error) throw error;
+  }
+};
+
+/* ---------------------------------------------------------------
+   AUTH (admin login)
+--------------------------------------------------------------- */
+const AuthAPI = {
+  async signIn(email, password) {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    const { data: adminRow } = await supabaseClient.from('admins').select('*').eq('id', data.user.id).maybeSingle();
+    if (!adminRow) {
+      await supabaseClient.auth.signOut();
+      throw new Error('هذا الحساب غير مخول للوصول إلى لوحة التحكم');
+    }
+    return { user: data.user, admin: adminRow };
+  },
+  async signOut() {
+    await supabaseClient.auth.signOut();
+  },
+  async currentSession() {
+    const { data } = await supabaseClient.auth.getSession();
+    return data.session;
+  }
+};
+
+
+/* ==============================================================
+   VELORA JEWELRY — ADMIN PANEL LOGIC (admin.html)
+   Vanilla JS, ES6. Depends on supabase.js being loaded first.
+   ============================================================== */
+
+const adminState = {
+  categories: [],
+  products: [],
+  orders: [],
+  editingProductId: null,
+  pendingImages: [] // {file, preview} queued during product create, before product has an id
+};
+
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'}"></i><span>${message}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.classList.add('fade-out'); setTimeout(() => toast.remove(), 300); }, 3000);
+}
+function formatPrice(v) { return `${Number(v).toFixed(2)} د.م.`; }
+
+/* ---------------------------------------------------------------
+   AUTH / VIEW SWITCHING
+--------------------------------------------------------------- */
+async function checkSession() {
+  const session = await AuthAPI.currentSession();
+  if (session) {
+    const { data: adminRow } = await supabaseClient.from('admins').select('*').eq('id', session.user.id).maybeSingle();
+    if (adminRow) { showDashboard(adminRow); return; }
+  }
+  showLogin();
+}
+
+function showLogin() {
+  document.getElementById('login-view').classList.remove('hidden');
+  document.getElementById('dashboard-view').classList.add('hidden');
+}
+
+async function showDashboard(adminRow) {
+  document.getElementById('login-view').classList.add('hidden');
+  document.getElementById('dashboard-view').classList.remove('hidden');
+  document.getElementById('admin-name').textContent = adminRow.full_name || adminRow.email;
+  await loadAllData();
+  renderStats();
+  renderProductsTable();
+  renderCategoriesTable();
+  renderOrdersTable();
+  populateCategorySelects();
+}
+
+document.getElementById('login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('[type="submit"]');
+  btn.disabled = true; btn.textContent = 'جاري الدخول...';
+  try {
+    const { admin } = await AuthAPI.signIn(e.target.email.value.trim(), e.target.password.value);
+    showToast('تم تسجيل الدخول بنجاح');
+    showDashboard(admin);
+  } catch (err) {
+    showToast(err.message || 'بيانات الدخول غير صحيحة', 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'تسجيل الدخول';
+  }
+});
+
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await AuthAPI.signOut();
+  showLogin();
+});
+
+/* ---------------------------------------------------------------
+   SIDEBAR NAVIGATION
+--------------------------------------------------------------- */
+document.querySelectorAll('.admin-nav [data-panel]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
+    document.querySelectorAll('.admin-panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById(link.dataset.panel).classList.remove('hidden');
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('show');
+  });
+});
+document.getElementById('admin-burger')?.addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('show');
+});
+document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+});
+
+/* ---------------------------------------------------------------
+   DATA LOADING
+--------------------------------------------------------------- */
+async function loadAllData() {
+  const [categories, products, orders] = await Promise.all([
+    CategoriesAPI.listAll(),
+    ProductsAPI.listAllForAdmin(),
+    OrdersAPI.listAllForAdmin()
+  ]);
+  adminState.categories = categories;
+  adminState.products = products;
+  adminState.orders = orders;
+}
+
+function renderStats() {
+  const totalRevenue = adminState.orders
+    .filter(o => o.status !== 'cancelled')
+    .reduce((s, o) => s + Number(o.total), 0);
+  const pendingCount = adminState.orders.filter(o => o.status === 'pending').length;
+  const lowStock = adminState.products.filter(p => p.stock <= 3 && p.is_active).length;
+
+  document.getElementById('stat-products').textContent = adminState.products.length;
+  document.getElementById('stat-orders').textContent = adminState.orders.length;
+  document.getElementById('stat-pending').textContent = pendingCount;
+  document.getElementById('stat-revenue').textContent = formatPrice(totalRevenue);
+  document.getElementById('stat-lowstock').textContent = lowStock;
+  document.getElementById('stat-categories').textContent = adminState.categories.length;
+}
+
+function populateCategorySelects() {
+  const options = adminState.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  document.getElementById('product-category-select').innerHTML = `<option value="">اختر الفئة</option>` + options;
+  document.getElementById('product-filter-category').innerHTML = `<option value="">كل الفئات</option>` + options;
+}
+
+/* ---------------------------------------------------------------
+   PRODUCTS TABLE
+--------------------------------------------------------------- */
+function renderProductsTable() {
+  const tbody = document.getElementById('products-table-body');
+  const search = document.getElementById('product-search').value.trim().toLowerCase();
+  const catFilter = document.getElementById('product-filter-category').value;
+  let list = adminState.products;
+  if (search) list = list.filter(p => p.title.toLowerCase().includes(search));
+  if (catFilter) list = list.filter(p => p.category_id === catFilter);
+
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-cell">لا توجد منتجات</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(p => {
+    const img = p.images && p.images.length ? p.images[0].image_url : 'assets/images/placeholder.jpg';
+    return `
+    <tr>
+      <td><img src="${img}" class="table-thumb" alt=""></td>
+      <td>${p.title}</td>
+      <td>${p.category ? p.category.name : '—'}</td>
+      <td>${formatPrice(p.price)} ${p.discount > 0 ? `<span class="tag-mini">-${p.discount}%</span>` : ''}</td>
+      <td>${p.stock}</td>
+      <td><span class="tag-mini ${p.is_active ? 'tag-green' : 'tag-gray'}">${p.is_active ? 'نشط' : 'موقوف'}</span> ${p.featured ? '<span class="tag-mini tag-gold">مميز</span>' : ''}</td>
+      <td class="table-actions">
+        <button data-action="edit-product" data-id="${p.id}" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+        <button data-action="delete-product" data-id="${p.id}" title="حذف"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+document.getElementById('product-search').addEventListener('input', renderProductsTable);
+document.getElementById('product-filter-category').addEventListener('change', renderProductsTable);
+
+/* ---------------------------------------------------------------
+   PRODUCT FORM (create / edit)
+--------------------------------------------------------------- */
+const productModal = document.getElementById('product-form-modal');
+
+function openProductForm(product = null) {
+  adminState.editingProductId = product ? product.id : null;
+  adminState.pendingImages = [];
+  const form = document.getElementById('product-form');
+  form.reset();
+  document.getElementById('product-form-title').textContent = product ? 'تعديل المنتج' : 'إضافة منتج جديد';
+
+  if (product) {
+    form.title.value = product.title;
+    form.slug.value = product.slug;
+    form.description.value = product.description || '';
+    form.price.value = product.price;
+    form.discount.value = product.discount || 0;
+    form.stock.value = product.stock;
+    form.sku.value = product.sku || '';
+    form.category_id.value = product.category_id || '';
+    form.featured.checked = product.featured;
+    form.is_active.checked = product.is_active;
+    renderExistingImages(product.images || []);
+  } else {
+    form.is_active.checked = true;
+    renderExistingImages([]);
+  }
+  renderPendingImages();
+  productModal.classList.add('show');
+}
+
+function closeProductForm() { productModal.classList.remove('show'); }
+
+function renderExistingImages(images) {
+  const box = document.getElementById('existing-images');
+  if (!images.length) { box.innerHTML = ''; return; }
+  box.innerHTML = images.map(img => `
+    <div class="img-chip" data-img-id="${img.id}">
+      <img src="${img.image_url}">
+      <button type="button" data-action="remove-existing-image" data-id="${img.id}" data-path="${img.image_path}">&times;</button>
+      ${img.is_primary ? '<span class="primary-badge">رئيسية</span>' : `<button type="button" class="set-primary-btn" data-action="set-primary-image" data-id="${img.id}">تعيين كرئيسية</button>`}
+    </div>
+  `).join('');
+}
+
+function renderPendingImages() {
+  const box = document.getElementById('pending-images');
+  box.innerHTML = adminState.pendingImages.map((p, idx) => `
+    <div class="img-chip"><img src="${p.preview}"><button type="button" data-action="remove-pending-image" data-idx="${idx}">&times;</button></div>
+  `).join('');
+}
+
+document.getElementById('product-images-input').addEventListener('change', e => {
+  Array.from(e.target.files).forEach(file => {
+    adminState.pendingImages.push({ file, preview: URL.createObjectURL(file) });
+  });
+  renderPendingImages();
+  e.target.value = '';
+});
+
+document.getElementById('product-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('[type="submit"]');
+  btn.disabled = true; btn.textContent = 'جاري الحفظ...';
+  try {
+    const payload = {
+      title: form.title.value.trim(),
+      slug: form.slug.value.trim() || slugify(form.title.value),
+      description: form.description.value.trim(),
+      price: parseFloat(form.price.value),
+      discount: parseFloat(form.discount.value) || 0,
+      stock: parseInt(form.stock.value, 10) || 0,
+      sku: form.sku.value.trim() || null,
+      category_id: form.category_id.value || null,
+      featured: form.featured.checked,
+      is_active: form.is_active.checked
+    };
+
+    let product;
+    if (adminState.editingProductId) {
+      product = await ProductsAPI.update(adminState.editingProductId, payload);
+    } else {
+      product = await ProductsAPI.create(payload);
+    }
+
+    // upload any newly queued images
+    const hadNoImages = !(product.images && product.images.length);
+    for (let i = 0; i < adminState.pendingImages.length; i++) {
+      const isPrimary = hadNoImages && i === 0;
+      await ProductImagesAPI.upload(product.id, adminState.pendingImages[i].file, { isPrimary, order: i });
+    }
+
+    showToast('تم حفظ المنتج بنجاح');
+    closeProductForm();
+    await loadAllData();
+    renderProductsTable();
+    renderStats();
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || 'حدث خطأ أثناء حفظ المنتج', 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'حفظ المنتج';
+  }
+});
+
+function slugify(text) {
+  return text.toString().trim().toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\u0600-\u06FFa-z0-9-]/g, '')
+    + '-' + Math.random().toString(36).substring(2, 6);
+}
+
+/* ---------------------------------------------------------------
+   DELEGATED ADMIN ACTIONS
+--------------------------------------------------------------- */
+document.addEventListener('click', async e => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  const id = btn.dataset.id;
+
+  if (action === 'add-product') openProductForm();
+  if (action === 'edit-product') {
+    const product = adminState.products.find(p => p.id === id);
+    if (product) openProductForm(product);
+  }
+  if (action === 'delete-product') {
+    if (!confirm('هل أنت متأكد من حذف هذا المنتج؟ سيتم حذف جميع صوره أيضاً.')) return;
+    try {
+      await ProductsAPI.remove(id);
+      showToast('تم حذف المنتج');
+      await loadAllData(); renderProductsTable(); renderStats();
+    } catch (err) { showToast('تعذر حذف المنتج', 'error'); }
+  }
+  if (action === 'close-product-form') closeProductForm();
+  if (action === 'remove-existing-image') {
+    const path = btn.dataset.path;
+    try {
+      await ProductImagesAPI.remove(id, path);
+      btn.closest('.img-chip').remove();
+      showToast('تم حذف الصورة');
+    } catch (err) { showToast('تعذر حذف الصورة', 'error'); }
+  }
+  if (action === 'set-primary-image') {
+    if (!adminState.editingProductId) return;
+    try {
+      await ProductImagesAPI.setPrimary(adminState.editingProductId, id);
+      const product = await ProductsAPI.getById(adminState.editingProductId);
+      renderExistingImages(product.images || []);
+      showToast('تم تعيين الصورة الرئيسية');
+    } catch (err) { showToast('تعذر التحديث', 'error'); }
+  }
+  if (action === 'remove-pending-image') {
+    adminState.pendingImages.splice(parseInt(btn.dataset.idx, 10), 1);
+    renderPendingImages();
+  }
+
+  // categories
+  if (action === 'add-category') openCategoryForm();
+  if (action === 'edit-category') {
+    const cat = adminState.categories.find(c => c.id === id);
+    if (cat) openCategoryForm(cat);
+  }
+  if (action === 'delete-category') {
+    if (!confirm('حذف هذه الفئة؟ سيتم فك ارتباط المنتجات بها.')) return;
+    try {
+      await CategoriesAPI.remove(id);
+      showToast('تم حذف الفئة');
+      await loadAllData(); renderCategoriesTable(); populateCategorySelects(); renderStats();
+    } catch (err) { showToast('تعذر حذف الفئة', 'error'); }
+  }
+  if (action === 'close-category-form') closeCategoryForm();
+
+  // orders
+  if (action === 'view-order') openOrderDetail(id);
+  if (action === 'close-order-detail') document.getElementById('order-detail-modal').classList.remove('show');
+});
+
+/* ---------------------------------------------------------------
+   CATEGORIES
+--------------------------------------------------------------- */
+const categoryModal = document.getElementById('category-form-modal');
+let editingCategoryId = null;
+
+function renderCategoriesTable() {
+  const tbody = document.getElementById('categories-table-body');
+  if (!adminState.categories.length) { tbody.innerHTML = `<tr><td colspan="4" class="empty-cell">لا توجد فئات</td></tr>`; return; }
+  tbody.innerHTML = adminState.categories.map(c => `
+    <tr>
+      <td><img src="${c.image_url || 'assets/images/placeholder.jpg'}" class="table-thumb"></td>
+      <td>${c.name}</td>
+      <td><span class="tag-mini ${c.is_active ? 'tag-green' : 'tag-gray'}">${c.is_active ? 'نشطة' : 'موقوفة'}</span></td>
+      <td class="table-actions">
+        <button data-action="edit-category" data-id="${c.id}"><i class="fa-solid fa-pen"></i></button>
+        <button data-action="delete-category" data-id="${c.id}"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openCategoryForm(cat = null) {
+  editingCategoryId = cat ? cat.id : null;
+  const form = document.getElementById('category-form');
+  form.reset();
+  document.getElementById('category-form-title').textContent = cat ? 'تعديل الفئة' : 'إضافة فئة جديدة';
+  if (cat) {
+    form.name.value = cat.name;
+    form.slug.value = cat.slug;
+    form.image_url.value = cat.image_url || '';
+    form.display_order.value = cat.display_order;
+    form.is_active.checked = cat.is_active;
+  } else {
+    form.is_active.checked = true;
+  }
+  categoryModal.classList.add('show');
+}
+function closeCategoryForm() { categoryModal.classList.remove('show'); }
+
+document.getElementById('category-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const form = e.target;
+  const payload = {
+    name: form.name.value.trim(),
+    slug: form.slug.value.trim() || slugify(form.name.value),
+    image_url: form.image_url.value.trim() || null,
+    display_order: parseInt(form.display_order.value, 10) || 0,
+    is_active: form.is_active.checked
+  };
+  try {
+    if (editingCategoryId) await CategoriesAPI.update(editingCategoryId, payload);
+    else await CategoriesAPI.create(payload);
+    showToast('تم حفظ الفئة');
+    closeCategoryForm();
+    await loadAllData(); renderCategoriesTable(); populateCategorySelects(); renderStats();
+  } catch (err) {
+    showToast(err.message || 'حدث خطأ أثناء الحفظ', 'error');
+  }
+});
+
+/* ---------------------------------------------------------------
+   ORDERS
+--------------------------------------------------------------- */
+function renderOrdersTable() {
+  const tbody = document.getElementById('orders-table-body');
+  const statusFilter = document.getElementById('order-status-filter').value;
+  let list = adminState.orders;
+  if (statusFilter) list = list.filter(o => o.status === statusFilter);
+
+  if (!list.length) { tbody.innerHTML = `<tr><td colspan="6" class="empty-cell">لا توجد طلبات</td></tr>`; return; }
+  const statusLabels = { pending: 'قيد الانتظار', confirmed: 'مؤكد', shipping: 'قيد الشحن', delivered: 'تم التسليم', cancelled: 'ملغي' };
+  tbody.innerHTML = list.map(o => `
+    <tr>
+      <td>${o.order_number}</td>
+      <td>${o.customer_name}<br><small>${o.customer_phone}</small></td>
+      <td>${o.customer_city}</td>
+      <td>${formatPrice(o.total)}</td>
+      <td>
+        <select data-action="update-status" data-id="${o.id}" class="status-select status-${o.status}">
+          ${Object.entries(statusLabels).map(([val, label]) => `<option value="${val}" ${o.status === val ? 'selected' : ''}>${label}</option>`).join('')}
+        </select>
+      </td>
+      <td class="table-actions"><button data-action="view-order" data-id="${o.id}"><i class="fa-solid fa-eye"></i></button></td>
+    </tr>
+  `).join('');
+}
+document.getElementById('order-status-filter').addEventListener('change', renderOrdersTable);
+
+document.addEventListener('change', async e => {
+  const select = e.target.closest('[data-action="update-status"]');
+  if (!select) return;
+  const id = select.dataset.id;
+  try {
+    await OrdersAPI.updateStatus(id, select.value);
+    select.className = `status-select status-${select.value}`;
+    showToast('تم تحديث حالة الطلب');
+    const order = adminState.orders.find(o => o.id === id);
+    if (order) order.status = select.value;
+    renderStats();
+  } catch (err) { showToast('تعذر تحديث الحالة', 'error'); }
+});
+
+function openOrderDetail(id) {
+  const order = adminState.orders.find(o => o.id === id);
+  if (!order) return;
+  const body = document.getElementById('order-detail-body');
+  body.innerHTML = `
+    <p><strong>${order.order_number}</strong></p>
+    <p>${order.customer_name} — ${order.customer_phone}</p>
+    <p>${order.customer_city} · ${order.customer_address}</p>
+    ${order.notes ? `<p style="color:var(--gray-dim);">ملاحظات: ${order.notes}</p>` : ''}
+    <hr style="border-color:rgba(255,255,255,0.08);margin:14px 0;">
+    ${order.items.map(i => `<div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>${i.product_title} × ${i.quantity}</span><span>${formatPrice(i.subtotal)}</span></div>`).join('')}
+    <div class="cart-total-row" style="margin-top:10px;"><span>المجموع</span><strong>${formatPrice(order.total)}</strong></div>
+  `;
+  document.getElementById('order-detail-modal').classList.add('show');
+}
+
+/* ---------------------------------------------------------------
+   SETTINGS
+--------------------------------------------------------------- */
+document.getElementById('settings-form')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  const form = e.target;
+  try {
+    await SettingsAPI.update({
+      site_name: form.site_name.value.trim(),
+      whatsapp_number: form.whatsapp_number.value.trim(),
+      currency: form.currency.value.trim()
+    });
+    showToast('تم حفظ الإعدادات');
+  } catch (err) { showToast('تعذر حفظ الإعدادات', 'error'); }
+});
+
+async function loadSettingsForm() {
+  try {
+    const s = await SettingsAPI.get();
+    const form = document.getElementById('settings-form');
+    form.site_name.value = s.site_name;
+    form.whatsapp_number.value = s.whatsapp_number || '';
+    form.currency.value = s.currency;
+  } catch (err) { /* ignore */ }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  checkSession();
+  loadSettingsForm();
+});
+
+</script>
+</body>
+</html>
